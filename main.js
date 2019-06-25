@@ -32,25 +32,32 @@ pc.gameLoop(gameData.interval, last => {
 
 	drawBlock(block, center);
 
-	// Move falling block
-	var move = {
-		x: last.keys.includes('d') ? 1 : (last.keys.includes('a') ? -1 : 0),
-		y: last.keys.includes('s') ? 1 : 0,
-	};
+	
+	var moveKey = 'move';
+	if (!last.timeStamp[moveKey] 
+		|| Date.now() - last.timeStamp[moveKey] > gameData.cooldowns.switchColumn) {
+		last.timeStamp[moveKey] = Date.now();
+		
+		// Move falling block
+		var move = {
+			x: last.keys.includes('d') ? 1 : (last.keys.includes('a') ? -1 : 0),
+			y: last.keys.includes('s') ? 1 : 0,
+		};
 
-	// Clear screen
-	var screenSize = pc.screenSize();
+		// Clear screen
+		var screenSize = pc.screenSize();
 
-	var obstacleAlongXAxis = state.blocks.find(
-		b => block.pos.x + move.x === b.pos.x &&
-		block.pos.y + 1 >= b.pos.y);
+		var obstacleAlongXAxis = state.blocks.find(
+			b => block.pos.x + move.x === b.pos.x &&
+			block.pos.y + 1 >= b.pos.y);
 
-	if (!obstacleAlongXAxis) {
-		block.pos.x += move.x;
-		block.pos.x = Math.max(0, block.pos.x);
-		block.pos.x = Math.min(gameData.main.cols - 1, block.pos.x);
+		if (!obstacleAlongXAxis) {
+			block.pos.x += move.x;
+			block.pos.x = Math.max(0, block.pos.x);
+			block.pos.x = Math.min(gameData.main.cols - 1, block.pos.x);
+		}
+
 	}
-
 
 	var isColision = block.pos.y + 1 >= gameData.main.rows;
 

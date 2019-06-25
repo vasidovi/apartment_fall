@@ -3,19 +3,14 @@ pc.listen('keydown', (last, e) => {
 
 	var key = e.key.toLowerCase();
 
-	if (!last.timeStamp[key]) {
-		last.timeStamp[key] = Date.now();
+	if (['a', 'd'].includes(key)) {
+		delete last.timeStamp['move'];
 	}
 
-	if (Date.now() - last.timeStamp[key] > 150) {
-		last.timeStamp[key] = Date.now();
-		return {
-			...last,
-			keys: last.keys.concat([key])
-		};
-	} else {
-		return last;
-	}
+	return {
+		...last,
+		keys: last.keys.concat([key])
+	};
 
 });
 

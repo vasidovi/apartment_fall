@@ -16,5 +16,8 @@ const gameData = {
         room: {
             color: "green"
         }
+    },
+    cooldowns: {
+        switchColumn: 150
     }
 }
