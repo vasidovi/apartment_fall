@@ -1,3 +1,4 @@
+// Original author: Kyle Perik
 function getPixelCanvas(canvas, size, state) {
 	const ctx = canvas.getContext('2d');
 	canvas.focus();
