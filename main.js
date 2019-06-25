@@ -4,18 +4,22 @@ pc.gameLoop(gameData.interval, last => {
 		...last
 	};
 
+	var screenSize = pc.screenSize();
 	var middle = pc.screenMiddle();
 
+	var gridfactor = Math.floor((screenSize.y - gameData.main.margin * 2) / gameData.main.rows);
+
 	var gameArea = {
-		width: gameData.main.cols * gameData.main.gridfactor + gameData.main.margin * 2,
-		height: gameData.main.rows * gameData.main.gridfactor + gameData.main.margin * 2
+		width: gameData.main.cols * gridfactor + gameData.main.margin * 2,
+		height: gameData.main.rows * gridfactor + gameData.main.margin * 2
 	};
 
 	var center = {
 		x: middle.x - gameArea.width / 2,
-		y: middle.y - gameArea.height / 2
+		y: screenSize.y - gameArea.height
 	}
 
+	// Clear screen
 	pc.rect(center.x, center.y, gameArea.width, gameArea.height, gameData.colors.background);
 
 
@@ -23,29 +27,27 @@ pc.gameLoop(gameData.interval, last => {
 		pos: {
 			x: Math.floor(gameData.main.cols / 2),
 			y: 0,
-        },
-        type: Object.keys(gameData.types)[0],
-		size: gameData.main.gridfactor
+		},
+		type: Object.keys(gameData.types)[0],
+		size: gridfactor
 	}
 
 	var block = state.block || initialBlock;
 
 	drawBlock(block, center);
 
-	
+
 	var moveKey = 'move';
-	if (!last.timeStamp[moveKey] 
-		|| Date.now() - last.timeStamp[moveKey] > gameData.cooldowns.switchColumn) {
+	if (!last.timeStamp[moveKey] ||
+		Date.now() - last.timeStamp[moveKey] > gameData.cooldowns.switchColumn) {
 		last.timeStamp[moveKey] = Date.now();
-		
+
 		// Move falling block
 		var move = {
 			x: last.keys.includes('d') ? 1 : (last.keys.includes('a') ? -1 : 0),
 			y: last.keys.includes('s') ? 1 : 0,
 		};
 
-		// Clear screen
-		var screenSize = pc.screenSize();
 
 		var obstacleAlongXAxis = state.blocks.find(
 			b => block.pos.x + move.x === b.pos.x &&
@@ -74,10 +76,10 @@ pc.gameLoop(gameData.interval, last => {
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
-        state.blocks.push(savedBlock);
-        
-        block = initialBlock;
-        block.type = random(gameData.types)
+		state.blocks.push(savedBlock);
+
+		block = initialBlock;
+		block.type = random(gameData.types)
 	} else {
 		block.pos.y += 0.14;
 	}

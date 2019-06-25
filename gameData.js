@@ -1,6 +1,6 @@
 const gameData = {
 	main: {
-		rows: 7,
+		rows: 14,
 		cols: 7,
 		gridfactor: 20,
 		margin: 5,
