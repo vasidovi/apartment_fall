@@ -1,8 +1,8 @@
 // === Setup the initial game state ===
 var initialState = {
-    timeStamp: {},
-    blocks: [],
-    keys: [],
+  timeStamp: {},
+  blocks: [],
+  keys: [],
 };
 
 // === Initialize Canvas ===
