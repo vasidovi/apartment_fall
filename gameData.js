@@ -1,7 +1,7 @@
 const gameData = {
 	main: {
-		rows: 14,
-        cols: 7,
+		rows: 9,
+        cols: 5,
         blockSpeed: 0.1,
 		gridfactor: 20,
 		margin: 5,
@@ -13,19 +13,19 @@ const gameData = {
     types: {
         cafe: {
             color: "yellow",
-            src: 'https://i.imgur.com/CEEhrPd.png'
+            src: 'images/cafe.png'
         },
         room: {
             color: "thistle",
-            src: 'https://i.imgur.com/AIuu3RT.png'
+            src: 'images/room.png'
         },
         bath: {
             color: 'blue',
-            src: 'https://i.imgur.com/WSLGi6h.png'
+            src: 'images/bath.png'
         },
         shop: {
             color: 'green',
-            src: 'https://i.imgur.com/ZUlrBEi.png'
+            src: 'images/shop.png'
         }
     },
     cooldowns: {
