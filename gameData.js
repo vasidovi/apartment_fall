@@ -8,5 +8,13 @@ const gameData = {
 	interval: 20,
 	colors: {
 		background: "black",
-	}
+    },
+    types: {
+        cafe: {
+            color: "red"
+        },
+        room: {
+            color: "green"
+        }
+    }
 }

@@ -23,8 +23,8 @@ pc.gameLoop(gameData.interval, last => {
 		pos: {
 			x: Math.floor(gameData.main.cols / 2),
 			y: 0,
-		},
-		color: "green",
+        },
+        type: Object.keys(gameData.types)[0],
 		size: gameData.main.gridfactor
 	}
 
@@ -65,10 +65,12 @@ pc.gameLoop(gameData.interval, last => {
 
 	if (isColision) {
 		var savedBlock = copy(block);
-		savedBlock.color = "red";
+		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
-		state.blocks.push(savedBlock);
-		block = initialBlock;
+        state.blocks.push(savedBlock);
+        
+        block = initialBlock;
+        block.type = random(gameData.types)
 	} else {
 		block.pos.y += 0.14;
 	}
@@ -89,5 +91,5 @@ function drawBlock(block, center) {
 		block.pos.y * block.size + center.y + gameData.main.margin,
 		block.size,
 		block.size,
-		block.color);
+		gameData.types[block.type].color);
 }

@@ -21,3 +21,14 @@ function copy(o) {
 	}
 	return output;
 }
+
+function random(arr = []) {
+
+	if (!(arr instanceof Array)) {
+		arr = Object.keys(arr);
+	}
+
+	return arr.length > 0 
+		? arr[Math.floor(Math.random() * arr.length)]
+		: undefined;
+}
