@@ -15,6 +15,18 @@ function getPixelCanvas(canvas, size, state) {
 				Math.round(height) * pc.size
 			);
 		},
+		drawImage: function (...args){
+			var img = args[0];
+			var dimensions = args.slice(1);
+			var src = [];
+			var dst = dimensions;
+			if (dimensions.length > 4) {
+				src = dimensions;
+				dst = args.slice(5);
+			}
+			dst = dst.map(d => d * pc.size);
+			this.ctx.drawImage(img, ...src, ...dst);
+		},
 		line: function (sx, sy, ex, ey, color) {
 			var xlen = ex - sx;
 			var ylen = ey - sy;

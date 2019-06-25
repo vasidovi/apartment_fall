@@ -96,9 +96,19 @@ pc.gameLoop(gameData.interval, last => {
 });
 
 function drawBlock(block, center) {
-	pc.rect(block.pos.x * block.size + center.x + gameData.main.margin,
-		block.pos.y * block.size + center.y + gameData.main.margin,
-		block.size,
-		block.size,
-		gameData.types[block.type].color);
+	var img = gameData.types[block.type].img;
+	if (img && img.complete) {
+		pc.drawImage(
+			img,
+			block.pos.x * block.size + center.x + gameData.main.margin,
+			block.pos.y * block.size + center.y + gameData.main.margin,
+			block.size,
+			block.size);
+	} else {
+		pc.rect(block.pos.x * block.size + center.x + gameData.main.margin,
+			block.pos.y * block.size + center.y + gameData.main.margin,
+			block.size,
+			block.size,
+			gameData.types[block.type].color);
+	}
 }
