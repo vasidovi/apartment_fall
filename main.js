@@ -73,6 +73,10 @@ pc.gameLoop(gameData.interval, last => {
 	}
 
 	if (isColision) {
+		// Restart game
+		if (block.pos.x === initialBlock.pos.x && block.pos.y === initialBlock.pos.y) {
+			return copy(initialState);
+		}
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
@@ -81,7 +85,7 @@ pc.gameLoop(gameData.interval, last => {
 		block = initialBlock;
 		block.type = random(gameData.types)
 	} else {
-		block.pos.y += 0.14;
+		block.pos.y += gameData.main.blockSpeed;
 	}
 
 	state.blocks.forEach(b => drawBlock(b, center));
