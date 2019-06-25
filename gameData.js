@@ -11,11 +11,20 @@ const gameData = {
     },
     types: {
         cafe: {
-            color: "red",
-            src: 'https://i.imgur.com/tveexXz.png'
+            color: "yellow",
+            src: 'https://i.imgur.com/CEEhrPd.png'
         },
         room: {
-            color: "green"
+            color: "thistle",
+            src: 'https://i.imgur.com/AIuu3RT.png'
+        },
+        bath: {
+            color: 'blue',
+            src: 'https://i.imgur.com/WSLGi6h.png'
+        },
+        shop: {
+            color: 'green',
+            src: 'https://i.imgur.com/ZUlrBEi.png'
         }
     },
     cooldowns: {
