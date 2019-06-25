@@ -34,8 +34,6 @@ pc.gameLoop(gameData.interval, last => {
 
 	var block = state.block || initialBlock;
 
-	drawBlock(block, center);
-
 
 	var moveKey = 'move';
 	if (!last.timeStamp[moveKey] ||
@@ -85,6 +83,7 @@ pc.gameLoop(gameData.interval, last => {
 		block = initialBlock;
 		block.type = random(gameData.types)
 	} else {
+		drawBlock(block, center);
 		block.pos.y += gameData.main.blockSpeed;
 	}
 
