@@ -2,7 +2,7 @@ const gameData = {
 	main: {
 		rows: 14,
         cols: 7,
-        blockSpeed: 0.3,
+        blockSpeed: 0.1,
 		gridfactor: 20,
 		margin: 5,
 	},

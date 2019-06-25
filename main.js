@@ -46,6 +46,9 @@ pc.gameLoop(gameData.interval, last => {
 			y: last.keys.includes('s') ? 1 : 0,
 		};
 
+		if (move.y) {
+			block.released = true;
+		}
 
 		var obstacleAlongXAxis = state.blocks.find(
 			b => block.pos.x + move.x === b.pos.x &&
@@ -84,7 +87,7 @@ pc.gameLoop(gameData.interval, last => {
 		block.type = random(gameData.types)
 	} else {
 		drawBlock(block, center);
-		block.pos.y += gameData.main.blockSpeed;
+		block.pos.y += gameData.main.blockSpeed * (block.released ? 6 : 1);
 	}
 
 	state.blocks.forEach(b => drawBlock(b, center));
