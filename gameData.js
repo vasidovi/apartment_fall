@@ -29,7 +29,7 @@ const gameData = {
             src: 'images/room.png',
             bonus: {
                 room: -3,
-                cafe: -2,
+                cafe: 2,
                 shop: 3,
                 bath: 1,
             }
