@@ -114,6 +114,8 @@ pc.gameLoop(gameData.interval, last => {
 	drawWalls(state, center);
 	state.blocks.forEach(b => drawBlock(b, center));
 
+	var thisBonus = last.lastBonus;
+
 	if (isColision) {
 		// Restart game
 		if (block.pos.x === initialBlock.pos.x && block.pos.y === initialBlock.pos.y) {
@@ -123,15 +125,21 @@ pc.gameLoop(gameData.interval, last => {
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
 		state.blocks.push(savedBlock);
-		score += getPlacementScore(savedBlock,state);
-
+		thisBonus = getPlacementScore(savedBlock,state); 
+		score += thisBonus;
 		drawBlock(savedBlock, center);
 
 		block = initialBlock;
 		block.type = random(gameData.types)
 	} else {
 		drawBlock(block, center);
+		markNeighbours(block, state, center);
 		block.pos.y += gameData.main.blockSpeed * (block.released ? 6 : 1);
+	}
+	
+	if (thisBonus){
+		var color = (thisBonus > 0) ? "green" : (thisBonus < 0) ? "red" : "black";  
+    prinPrintCurrentScore(thisBonus, color, center, gameArea);
 	}
 
 	printScore(score, center, gameArea);
@@ -139,6 +147,7 @@ pc.gameLoop(gameData.interval, last => {
 	state = {
 		...last,
 		score,
+		lastBonus: thisBonus,
 		block,
 		move
 	}
@@ -204,15 +213,57 @@ function drawObjects(state){
 		)
 	})
 }
+function prinPrintCurrentScore(score, color, center, gameArea){
+
+	var ctx = pc.ctx;
+	ctx.font = "30px Comic Sans MS";
+	ctx.fillStyle = color;
+	ctx.textAlign = "right";
+	ctx.fillText("$" + score,
+		(center.x + gameArea.width - gameData.main.margin) * pc.size,
+		(center.y + gameData.main.margin *4 ) * pc.size); 
+}
 
 function printScore(score, center, gameArea){
 	var ctx = pc.ctx;
 	ctx.font = "30px Comic Sans MS";
-	ctx.fillStyle = "green";
+	ctx.fillStyle = "black";
 	ctx.textAlign = "right";
 	ctx.fillText("$" + score,
 		(center.x + gameArea.width - gameData.main.margin) * pc.size,
 		(center.y + gameData.main.margin *2 ) * pc.size); 
+
+}
+
+function markNeighbours(block, state, center){
+
+	var landingHeight = gameData.main.rows - 
+	state.blocks.filter(
+		b => (block.pos.x === b.pos.x ) 
+	).length;
+
+	var neighbours = state.blocks.filter(
+		b => (block.pos.x === b.pos.x + 1
+		|| block.pos.x === b.pos.x - 1)
+		&& landingHeight - 1 === b.pos.y);
+
+		neighbours.forEach( n => { 
+			var bonus = gameData.types[n.type].bonus[block.type];
+			var options = {
+				type: "stroke",
+				lineWidth: Math.abs(bonus) + 1
+			};
+			var color = "white";
+			if (bonus > 0){
+				color = "green";
+			} else if (bonus < 0){
+				color = "red";
+			}
+
+			pc.rect(n.pos.x * block.size + center.x + gameData.main.margin,
+				n.pos.y * block.size + center.y + gameData.main.margin,
+				block.size, block.size, color, options);
+		})
 
 }
 

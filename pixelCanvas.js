@@ -7,14 +7,30 @@ function getPixelCanvas(canvas, size, state) {
 		ctx: ctx,
 		canvas: canvas,
 		state: state,
-		rect: function (x, y, width, height, color) {
+		rect: function (x, y, width, height, color, options) {
 			ctx.fillStyle = color || 'white';
+			var options = options || {};
+			var type = options.type || "default";
+
+			if (type === "default") {
 			ctx.fillRect(
 				Math.round(x) * pc.size,
 				Math.round(y) * pc.size,
 				Math.round(width) * pc.size,
 				Math.round(height) * pc.size
 			);
+			}
+			else if (type === "stroke") {
+				ctx.strokeStyle = color || "red";
+				ctx.lineWidth = options.lineWidth || 1;
+				ctx.strokeRect(					
+					Math.round(x) * pc.size,
+					Math.round(y) * pc.size,
+					Math.round(width) * pc.size,
+					Math.round(height) * pc.size
+				);
+
+			} 
 		},
 		drawImage: function (...args){
 			var img = args[0];

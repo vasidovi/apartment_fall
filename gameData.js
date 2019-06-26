@@ -10,7 +10,7 @@ const gameData = {
     interval: 50,
     
 	colors: {
-        background: "#abf",
+        background: "#8bf",
         grass: "#9b5"
     },
     types: {
