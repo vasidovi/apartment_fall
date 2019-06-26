@@ -25,6 +25,7 @@ pc.gameLoop(gameData.interval, last => {
 	
 	var score = state.score;
 	
+
 	if (!last.initialized) {
 		for (var i = 0; i < screenSize.x / 20; i++) {
 			var size = (Math.random() / 2 + 0.5)* gridfactor * 2;
@@ -80,7 +81,6 @@ pc.gameLoop(gameData.interval, last => {
 			x: last.keys.includes('d') ? 1 : (last.keys.includes('a') ? -1 : 0),
 			y: last.keys.includes('s') ? 1 : 0,
 		};
-
 		if (move.y) {
 			block.released = true;
 		}
@@ -143,6 +143,14 @@ pc.gameLoop(gameData.interval, last => {
 	}
 
 	printScore(score, center, gameArea);
+
+
+	if (!last.pressedAnything) {
+		if (last.keys.length) {
+			last.pressedAnything = true;
+		}
+		printControls(center, gameArea);
+	}
 
 	state = {
 		...last,
@@ -232,6 +240,17 @@ function printScore(score, center, gameArea){
 	ctx.fillText("$" + score,
 		(center.x + gameArea.width - gameData.main.margin) * pc.size,
 		(center.y + gameData.main.margin *2 ) * pc.size); 
+
+}
+
+function printControls(center, gameArea){
+	var ctx = pc.ctx;
+	ctx.font = "30px Comic Sans MS";
+	ctx.fillStyle = "white";
+	ctx.textAlign = "center";
+	ctx.fillText("A, D - move; S - release",
+		(center.x + gameArea.width / 2) * pc.size,
+		(center.y + gameData.main.margin *5 ) * pc.size); 
 
 }
 
