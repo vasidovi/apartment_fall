@@ -7,7 +7,7 @@ const gameData = {
 		margin: 5,
 	},
     interval: 50,
-    score: 0,
+    
 	colors: {
 		background: "black",
     },

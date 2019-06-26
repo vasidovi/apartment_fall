@@ -3,6 +3,7 @@ var initialState = {
   timeStamp: {},
   blocks: [],
   keys: [],
+  score: 0,
 };
 
 // === Initialize Canvas ===

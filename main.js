@@ -19,6 +19,8 @@ pc.gameLoop(gameData.interval, last => {
 		y: screenSize.y - gameArea.height
 	}
 
+	var score = state.score;
+
 	pc.rect(center.x, center.y, gameArea.width, gameArea.height, gameData.colors.background);
 
 
@@ -79,7 +81,7 @@ pc.gameLoop(gameData.interval, last => {
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
-		gameData.score += getPlacementScore();
+		score += getPlacementScore();
 		state.blocks.push(savedBlock);
 
 		block = initialBlock;
@@ -91,10 +93,11 @@ pc.gameLoop(gameData.interval, last => {
 
 	state.blocks.forEach(b => drawBlock(b, center));
 
-	printScore(gameData.score, center, gameArea);
+	printScore(score, center, gameArea);
 
 	state = {
 		...last,
+		score,
 		block,
 		move
 	}

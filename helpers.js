@@ -6,12 +6,6 @@ function vdo(f) {
 	};
 }
 
-// Simple collision test
-function aabb(ax, ay, ar, bx, by, br) {
-	return Math.abs(ax - bx) < (ar + br) / 2 && Math.abs(ay - by) < (ar + br) / 2;
-}
-
-
 function copy(o) {
 	var output, v, key;
 	output = Array.isArray(o) ? [] : {};
