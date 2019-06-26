@@ -2,13 +2,14 @@ const gameData = {
 	main: {
 		rows: 9,
         cols: 5,
-        blockSpeed: 0.088,
+        blockSpeed: 0.066,
 		gridfactor: 20,
-		margin: 5,
+        margin: 5,
+        grassX: 20,
 	},
 	interval: 50,
 	colors: {
-        background: "#bce",
+        background: "#abf",
         grass: "#9b5"
     },
     types: {
@@ -31,9 +32,12 @@ const gameData = {
     },
     objects: {
         wall: {
-            color: "red",
-            src: 'images/wall.png'
-        }
+            src: 'images/wall.png',
+        },
+        bush: {
+            src: 'images/bush.png',
+        },
+
     },
     cooldowns: {
         switchColumn: 150

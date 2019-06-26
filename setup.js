@@ -2,6 +2,7 @@
 var initialState = {
   timeStamp: {},
   blocks: [],
+  objects: [],
   keys: [],
 };
 
@@ -11,4 +12,10 @@ const canvas = document.getElementById('canvas');
 canvas.width = document.body.clientWidth;
 canvas.height = document.body.clientHeight;
 
-var pc = getPixelCanvas(canvas, 3, copy(initialState));
+var pc = getPixelCanvas(canvas, 3, getInitialState());
+
+function getInitialState() {
+  var state = copy(initialState);
+
+  return state;
+}

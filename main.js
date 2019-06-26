@@ -4,6 +4,7 @@ pc.gameLoop(gameData.interval, last => {
 		...last
 	};
 
+
 	var screenSize = pc.screenSize();
 	var middle = pc.screenMiddle();
 
@@ -19,13 +20,30 @@ pc.gameLoop(gameData.interval, last => {
 		y: screenSize.y - gameArea.height
 	}
 
-	// Clear screen
 	var grassW = gridfactor;
 	var grassY = screenSize.y - grassW;
+	
+	if (!last.initialized) {
+		for (var i = 0; i < screenSize.x / 20; i++) {
+			var size = (Math.random() / 2 + 0.5)* gridfactor * 2;
+			last.objects.push({
+				type: "bush",
+				size: size,
+				pos: {
+					x: Math.random() * screenSize.x - size / 2,
+					y: grassY - size
+				}
+			})
+		}
+
+		last.initialized = true;
+	}
+
+
+	// Clear screen
 	pc.rect(0, 0, screenSize.x, grassY, gameData.colors.background);
 	pc.rect(0, grassY, screenSize.x, grassW, gameData.colors.grass)
 
-	drawWalls(state, center);
 
 	var initialBlock = {
 		pos: {
@@ -77,15 +95,22 @@ pc.gameLoop(gameData.interval, last => {
 		isColision = true;
 	}
 
+	
+
+	drawObjects(state);
+	drawWalls(state, center);
+	state.blocks.forEach(b => drawBlock(b, center));
+
 	if (isColision) {
 		// Restart game
 		if (block.pos.x === initialBlock.pos.x && block.pos.y === initialBlock.pos.y) {
-			return copy(initialState);
+			return getInitialState();
 		}
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
 		state.blocks.push(savedBlock);
+		drawBlock(savedBlock, center);
 
 		block = initialBlock;
 		block.type = random(gameData.types)
@@ -93,8 +118,6 @@ pc.gameLoop(gameData.interval, last => {
 		drawBlock(block, center);
 		block.pos.y += gameData.main.blockSpeed * (block.released ? 6 : 1);
 	}
-
-	state.blocks.forEach(b => drawBlock(b, center));
 
 	state = {
 		...last,
@@ -150,4 +173,16 @@ function drawWalls(state, center) {
 			b.size
 			)
 	});
+}
+
+function drawObjects(state){
+	state.objects.forEach(o => {
+		pc.drawImage(
+			gameData.objects[o.type].img,
+			o.pos.x,
+			o.pos.y,
+			o.size,
+			o.size
+		)
+	})
 }
