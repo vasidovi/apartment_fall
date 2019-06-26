@@ -37,6 +37,9 @@ const gameData = {
         bush: {
             src: 'images/bush.png',
         },
+        cloud: {
+            src: 'images/cloud.png',
+        },
 
     },
     cooldowns: {

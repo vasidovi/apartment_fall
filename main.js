@@ -36,6 +36,18 @@ pc.gameLoop(gameData.interval, last => {
 			})
 		}
 
+		for (var i = 0; i < screenSize.x / 20; i++) {
+			var size = (Math.random() / 2 + 0.5)* gridfactor * 2;
+			last.objects.push({
+				type: "cloud",
+				size: size,
+				pos: {
+					x: Math.random() * screenSize.x - size / 2,
+					y: Math.random() * screenSize.y / 2
+				}
+			})
+		}
+
 		last.initialized = true;
 	}
 
