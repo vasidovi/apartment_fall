@@ -4,6 +4,7 @@ pc.gameLoop(gameData.interval, last => {
 		...last
 	};
 
+
 	var screenSize = pc.screenSize();
 	var middle = pc.screenMiddle();
 
@@ -19,9 +20,43 @@ pc.gameLoop(gameData.interval, last => {
 		y: screenSize.y - gameArea.height
 	}
 
+	var grassW = gridfactor;
+	var grassY = screenSize.y - grassW;
+	
 	var score = state.score;
+	
+	if (!last.initialized) {
+		for (var i = 0; i < screenSize.x / 20; i++) {
+			var size = (Math.random() / 2 + 0.5)* gridfactor * 2;
+			last.objects.push({
+				type: "bush",
+				size: size,
+				pos: {
+					x: Math.random() * screenSize.x - size / 2,
+					y: grassY - size
+				}
+			})
+		}
 
-	pc.rect(center.x, center.y, gameArea.width, gameArea.height, gameData.colors.background);
+		for (var i = 0; i < screenSize.x / 20; i++) {
+			var size = (Math.random() / 2 + 0.5)* gridfactor * 2;
+			last.objects.push({
+				type: "cloud",
+				size: size,
+				pos: {
+					x: Math.random() * screenSize.x - size / 2,
+					y: Math.random() * screenSize.y / 2
+				}
+			})
+		}
+
+		last.initialized = true;
+	}
+
+
+	// Clear screen
+	pc.rect(0, 0, screenSize.x, grassY, gameData.colors.background);
+	pc.rect(0, grassY, screenSize.x, grassW, gameData.colors.grass)
 
 
 	var initialBlock = {
@@ -73,10 +108,16 @@ pc.gameLoop(gameData.interval, last => {
 		isColision = true;
 	}
 
+	
+
+	drawObjects(state);
+	drawWalls(state, center);
+	state.blocks.forEach(b => drawBlock(b, center));
+
 	if (isColision) {
 		// Restart game
 		if (block.pos.x === initialBlock.pos.x && block.pos.y === initialBlock.pos.y) {
-			return copy(initialState);
+			return getInitialState();
 		}
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
@@ -84,6 +125,7 @@ pc.gameLoop(gameData.interval, last => {
 		state.blocks.push(savedBlock);
 		score += getPlacementScore(savedBlock,state);
 
+		drawBlock(savedBlock, center);
 
 		block = initialBlock;
 		block.type = random(gameData.types)
@@ -91,8 +133,6 @@ pc.gameLoop(gameData.interval, last => {
 		drawBlock(block, center);
 		block.pos.y += gameData.main.blockSpeed * (block.released ? 6 : 1);
 	}
-
-	state.blocks.forEach(b => drawBlock(b, center));
 
 	printScore(score, center, gameArea);
 
@@ -122,6 +162,47 @@ function drawBlock(block, center) {
 			block.size,
 			gameData.types[block.type].color);
 	}
+}
+
+function drawWalls(state, center) {
+	var screenSize = pc.screenSize();
+	
+	var leftBlocks = state.blocks.filter(b=>b.pos.x === 0);
+	
+	pc.ctx.save();
+	pc.ctx.scale(-1,1);
+	leftBlocks.forEach((b, i) => {
+		pc.drawImage(
+			gameData.objects.wall.img, 
+			- center.x - gameData.main.margin , 
+			screenSize.y - gameData.main.margin - b.size * (i + 1),
+			b.size,
+			b.size
+			)
+	});
+	pc.ctx.restore()
+	var rightBlocks = state.blocks.filter(b=>b.pos.x === gameData.main.cols - 1);
+	rightBlocks.forEach((b, i) => {
+		pc.drawImage(
+			gameData.objects.wall.img, 
+			center.x + gameData.main.margin + gameData.main.cols * b.size, 
+			screenSize.y - gameData.main.margin - b.size * (i + 1),
+			b.size,
+			b.size
+			)
+	});
+}
+
+function drawObjects(state){
+	state.objects.forEach(o => {
+		pc.drawImage(
+			gameData.objects[o.type].img,
+			o.pos.x,
+			o.pos.y,
+			o.size,
+			o.size
+		)
+	})
 }
 
 function printScore(score, center, gameArea){

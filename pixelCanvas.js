@@ -18,6 +18,9 @@ function getPixelCanvas(canvas, size, state) {
 		},
 		drawImage: function (...args){
 			var img = args[0];
+			if (!img || !img.complete) {
+				return
+			}
 			var dimensions = args.slice(1);
 			var src = [];
 			var dst = dimensions;

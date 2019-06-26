@@ -2,14 +2,16 @@ const gameData = {
 	main: {
 		rows: 9,
         cols: 5,
-        blockSpeed: 0.088,
+        blockSpeed: 0.066,
 		gridfactor: 20,
-		margin: 5,
+        margin: 5,
+        grassX: 20,
 	},
     interval: 50,
     
 	colors: {
-		background: "black",
+        background: "#abf",
+        grass: "#9b5"
     },
     types: {
         cafe: {
@@ -53,12 +55,24 @@ const gameData = {
             }
         }
     },
+    objects: {
+        wall: {
+            src: 'images/wall.png',
+        },
+        bush: {
+            src: 'images/bush.png',
+        },
+        cloud: {
+            src: 'images/cloud.png',
+        },
+
+    },
     cooldowns: {
         switchColumn: 150
     }
 }
 
-Object.values(gameData.types).forEach(
+Object.values({...gameData.types, ...gameData.objects}).forEach(
     t => {
         if (t.src){
             t.img = new Image();
