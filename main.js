@@ -20,8 +20,12 @@ pc.gameLoop(gameData.interval, last => {
 	}
 
 	// Clear screen
-	pc.rect(center.x, center.y, gameArea.width, gameArea.height, gameData.colors.background);
+	var grassW = gridfactor;
+	var grassY = screenSize.y - grassW;
+	pc.rect(0, 0, screenSize.x, grassY, gameData.colors.background);
+	pc.rect(0, grassY, screenSize.x, grassW, gameData.colors.grass)
 
+	drawWalls(state, center);
 
 	var initialBlock = {
 		pos: {
@@ -117,4 +121,33 @@ function drawBlock(block, center) {
 			block.size,
 			gameData.types[block.type].color);
 	}
+}
+
+function drawWalls(state, center) {
+	var screenSize = pc.screenSize();
+	
+	var leftBlocks = state.blocks.filter(b=>b.pos.x === 0);
+	
+	pc.ctx.save();
+	pc.ctx.scale(-1,1);
+	leftBlocks.forEach((b, i) => {
+		pc.drawImage(
+			gameData.objects.wall.img, 
+			- center.x - gameData.main.margin , 
+			screenSize.y - gameData.main.margin - b.size * (i + 1),
+			b.size,
+			b.size
+			)
+	});
+	pc.ctx.restore()
+	var rightBlocks = state.blocks.filter(b=>b.pos.x === gameData.main.cols - 1);
+	rightBlocks.forEach((b, i) => {
+		pc.drawImage(
+			gameData.objects.wall.img, 
+			center.x + gameData.main.margin + gameData.main.cols * b.size, 
+			screenSize.y - gameData.main.margin - b.size * (i + 1),
+			b.size,
+			b.size
+			)
+	});
 }

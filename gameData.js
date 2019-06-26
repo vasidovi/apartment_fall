@@ -8,7 +8,8 @@ const gameData = {
 	},
 	interval: 50,
 	colors: {
-		background: "black",
+        background: "#bce",
+        grass: "#9b5"
     },
     types: {
         cafe: {
@@ -28,12 +29,18 @@ const gameData = {
             src: 'images/shop.png'
         }
     },
+    objects: {
+        wall: {
+            color: "red",
+            src: 'images/wall.png'
+        }
+    },
     cooldowns: {
         switchColumn: 150
     }
 }
 
-Object.values(gameData.types).forEach(
+Object.values({...gameData.types, ...gameData.objects}).forEach(
     t => {
         if (t.src){
             t.img = new Image();
