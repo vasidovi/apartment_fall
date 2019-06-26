@@ -81,8 +81,9 @@ pc.gameLoop(gameData.interval, last => {
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
-		score += getPlacementScore();
 		state.blocks.push(savedBlock);
+		score += getPlacementScore(savedBlock,state);
+
 
 		block = initialBlock;
 		block.type = random(gameData.types)
@@ -134,6 +135,18 @@ function printScore(score, center, gameArea){
 
 }
 
-function getPlacementScore(){
-	return 1;
+function getPlacementScore(block, state){
+	// neighbours to the left and right 
+	var neighbours = state.blocks.filter(
+		b => (block.pos.x === b.pos.x + 1
+		|| block.pos.x === b.pos.x - 1)
+		&& block.pos.y === b.pos.y)
+		.map( n => n.type);
+
+	var sumBonus = 0;	
+
+	neighbours.forEach( n => 
+		sumBonus += gameData.types[n].bonus[block.type]);	
+	
+	return sumBonus;
 }
