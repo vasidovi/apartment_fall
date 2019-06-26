@@ -2,11 +2,11 @@ const gameData = {
 	main: {
 		rows: 9,
         cols: 5,
-        blockSpeed: 0.11,
+        blockSpeed: 0.088,
 		gridfactor: 20,
 		margin: 5,
 	},
-	interval: 20,
+	interval: 50,
 	colors: {
 		background: "black",
     },
