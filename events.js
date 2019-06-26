@@ -3,7 +3,7 @@ pc.listen('keydown', (last, e) => {
 
 	var key = e.key.toLowerCase();
 
-	if (['a', 'd'].includes(key)) {
+	if (['a', 'd', 's'].includes(key)) {
 		delete last.timeStamp['move'];
 	}
 
