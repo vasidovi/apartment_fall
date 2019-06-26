@@ -23,6 +23,8 @@ pc.gameLoop(gameData.interval, last => {
 	var grassW = gridfactor;
 	var grassY = screenSize.y - grassW;
 	
+	var score = state.score;
+	
 	if (!last.initialized) {
 		for (var i = 0; i < screenSize.x / 20; i++) {
 			var size = (Math.random() / 2 + 0.5)* gridfactor * 2;
@@ -67,7 +69,6 @@ pc.gameLoop(gameData.interval, last => {
 	}
 
 	var block = state.block || initialBlock;
-
 
 	var moveKey = 'move';
 	if (!last.timeStamp[moveKey] ||
@@ -122,6 +123,8 @@ pc.gameLoop(gameData.interval, last => {
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
 		state.blocks.push(savedBlock);
+		score += getPlacementScore(savedBlock,state);
+
 		drawBlock(savedBlock, center);
 
 		block = initialBlock;
@@ -131,8 +134,11 @@ pc.gameLoop(gameData.interval, last => {
 		block.pos.y += gameData.main.blockSpeed * (block.released ? 6 : 1);
 	}
 
+	printScore(score, center, gameArea);
+
 	state = {
 		...last,
+		score,
 		block,
 		move
 	}
@@ -197,4 +203,31 @@ function drawObjects(state){
 			o.size
 		)
 	})
+}
+
+function printScore(score, center, gameArea){
+	var ctx = pc.ctx;
+	ctx.font = "30px Comic Sans MS";
+	ctx.fillStyle = "green";
+	ctx.textAlign = "right";
+	ctx.fillText("$" + score,
+		(center.x + gameArea.width - gameData.main.margin) * pc.size,
+		(center.y + gameData.main.margin *2 ) * pc.size); 
+
+}
+
+function getPlacementScore(block, state){
+	// neighbours to the left and right 
+	var neighbours = state.blocks.filter(
+		b => (block.pos.x === b.pos.x + 1
+		|| block.pos.x === b.pos.x - 1)
+		&& block.pos.y === b.pos.y)
+		.map( n => n.type);
+
+	var sumBonus = 0;	
+
+	neighbours.forEach( n => 
+		sumBonus += gameData.types[n].bonus[block.type]);	
+	
+	return sumBonus;
 }

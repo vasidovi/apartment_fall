@@ -4,6 +4,7 @@ var initialState = {
   blocks: [],
   objects: [],
   keys: [],
+  score: 0,
 };
 
 // === Initialize Canvas ===
