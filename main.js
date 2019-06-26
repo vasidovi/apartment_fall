@@ -19,7 +19,6 @@ pc.gameLoop(gameData.interval, last => {
 		y: screenSize.y - gameArea.height
 	}
 
-	// Clear screen
 	pc.rect(center.x, center.y, gameArea.width, gameArea.height, gameData.colors.background);
 
 
@@ -33,7 +32,6 @@ pc.gameLoop(gameData.interval, last => {
 	}
 
 	var block = state.block || initialBlock;
-
 
 	var moveKey = 'move';
 	if (!last.timeStamp[moveKey] ||
@@ -81,6 +79,7 @@ pc.gameLoop(gameData.interval, last => {
 		var savedBlock = copy(block);
 		savedBlock.color = gameData.types[block.type].color;
 		savedBlock.pos.y = Math.floor(savedBlock.pos.y);
+		gameData.score += getPlacementScore();
 		state.blocks.push(savedBlock);
 
 		block = initialBlock;
@@ -91,6 +90,8 @@ pc.gameLoop(gameData.interval, last => {
 	}
 
 	state.blocks.forEach(b => drawBlock(b, center));
+
+	printScore(gameData.score, center, gameArea);
 
 	state = {
 		...last,
@@ -117,4 +118,19 @@ function drawBlock(block, center) {
 			block.size,
 			gameData.types[block.type].color);
 	}
+}
+
+function printScore(score, center, gameArea){
+	var ctx = pc.ctx;
+	ctx.font = "30px Comic Sans MS";
+	ctx.fillStyle = "green";
+	ctx.textAlign = "right";
+	ctx.fillText("$" + score,
+		(center.x + gameArea.width - gameData.main.margin) * pc.size,
+		(center.y + gameData.main.margin *2 ) * pc.size); 
+
+}
+
+function getPlacementScore(){
+	return 1;
 }
