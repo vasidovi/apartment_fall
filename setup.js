@@ -4,6 +4,7 @@ var initialState = {
   blocks: [],
   objects: [],
   keys: [],
+  lastBonus: 0,
   score: 0,
 };
 
